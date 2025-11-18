@@ -27,6 +27,4 @@ TRAIN_WEIGHT = ones(1, 6) .* FREIGHT_N
 TRAIN_WEIGHT(5) = LOCO_N
 TRAIN_WEIGHT(6) = LOCO_N
 
-
-
-
+# help
