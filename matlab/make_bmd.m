@@ -32,15 +32,13 @@ TOTAL_TRAIN_WEIGHT = sum(TRAIN_WEIGHT)
 SUPPORT_L = 25;
 SUPPORT_R = 1225;
 
+# find the reaction forces on both sides
 START_SIM = -TRAIN_LEN;
 END_SIM = SUPPORT_R;
-
-#START_SIM = 800
-#END_SIM = 800
-
+#START_SIM = 500
+#END_SIM = 500
 STEP_SIM = 10;
-all_react_lhs = [];
-all_react_rhs = [];
+reaction = [[]:[]];
 steps = START_SIM:STEP_SIM:END_SIM;
 for position = steps;
   # find the reaction forces for each step
@@ -48,20 +46,69 @@ for position = steps;
   # filters out axles that are not on the bridge anymore
   # train_pos = train_pos .* (train_pos > SUPPORT_L) .* (train_pos < SUPPORT_R)
   dist_to_lhs = train_pos - SUPPORT_L;
+  # checks if the train is on the bridge
   trains_on_bridge = (train_pos > SUPPORT_L) .* (train_pos < SUPPORT_R);
   moments_to_lhs = dist_to_lhs .* TRAIN_WEIGHT .* trains_on_bridge;
   dist_between_support = SUPPORT_R - SUPPORT_L;
   reaction_rhs = sum(moments_to_lhs) / dist_between_support * -1;
   reaction_lhs = -sum(TRAIN_WEIGHT .* trains_on_bridge) - reaction_rhs;
 
-  all_react_lhs(end+1) = reaction_lhs;
-  all_react_rhs(end+1) = reaction_rhs;
-end
-plot(steps, all_react_lhs);
-hold on
-plot(steps, all_react_rhs);
+  reaction(1,end+1) = reaction_lhs;
+  reaction(2,end) = reaction_rhs;
 
-legend("LHS Reaction", "RHS Reaction")
+  # filter the train axles so that only the ones within the range are valid
+
+  train_load = nonzeros(TRAIN_WEIGHT .* trains_on_bridge)
+  train_pos = nonzeros(train_pos .* trains_on_bridge)
+
+  force_loc = [SUPPORT_L, train_pos', SUPPORT_R]
+  force_loc = repelem(force_loc, 2)
+  force_loc = [force_loc, 0]
+
+  shear_n = [reaction_lhs, train_load', reaction_rhs]
+  shear_n = repelem(cumsum(shear_n), 2)
+  shear_n = [0, shear_n]
+
+  plot(force_loc, shear_n)
+  hold on
+
+#  shear = [[reaction_lhs, train_load, reaction_rhs],[SUPPORT_L, train_pos, SUPPORT_R]]
+#  plot(shear(2,:), shear(1,:))
+#  hold on
+end
+
+hold off
+
+#plot(steps, reaction(1,:));
+#hold on
+#plot(steps, reaction(2,:));
+#legend("LHS Reaction", "RHS Reaction")
+#hold off
+
+for reaction_pair = reaction
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
