@@ -17,7 +17,7 @@ TRAIN_REL_POS = [ED_WHEEL AX_TO_AX CAR_TO_CAR AX_TO_AX CAR_TO_CAR AX_TO_AX];
 TRAIN_LEN = sum(TRAIN_REL_POS)
 TRAIN_REL_POS = cumsum(TRAIN_REL_POS);
 
-FREIGHT_N = 1;
+FREIGHT_N = 100;
 FREIGHT_N = FREIGHT_N / 2;
 BACK_MULT = 1.1;
 BACK_N = FREIGHT_N * BACK_MULT;
@@ -81,7 +81,7 @@ for position = steps;
     cur_shear = shear_n(idx+1);
     moment_len = force_loc(idx+1) - force_loc(idx);
     moment_n(end+1) = cur_shear * moment_len;
-  endfor
+  end
   moment_n = cumsum(moment_n);
   max_moment(end+1) = max(moment_n);
 
@@ -115,9 +115,33 @@ max_shear = max(max_shear)
 
 # YANG check shear in matboard
 
+%% Calculate FOS's
+
+MAX_SHEAR_GLUE = 2 % MPA
+MAX_SHEAR_MATBOARD = 4 % MPA
+GLUE_WIDTH = 10 % mm
+TOP_LENGTH = 100 % mm
+MAT_THICKNESS = 1.27 % mm
+q_top = TOP_LENGTH * MAT_THICKNESS
+inertia_mm
+shear_glue = max_moment * q_top / inertia_mm / GLUE_WIDTH
+
+glue_fos = MAX_SHEAR_GLUE / shear_glue
+
 # YANG check shear at glue joint
 
 # YANG check thin plate buckling everywhere :melt:
+
+
+
+
+
+
+
+
+
+
+
 
 
 
