@@ -111,9 +111,7 @@ max_shear = max(max_shear)
 
 # DANIEL check buckling at the top
 
-# YANG check buckling at the bottom
-
-# YANG check shear in matboard
+# YANG check buckling at the bottom and glue
 
 %% Calculate FOS's
 
@@ -122,13 +120,20 @@ MAX_SHEAR_MATBOARD = 4 % MPA
 GLUE_WIDTH = 10 % mm
 TOP_LENGTH = 100 % mm
 MAT_THICKNESS = 1.27 % mm
-q_top = TOP_LENGTH * MAT_THICKNESS
-inertia_mm
-shear_glue = max_moment * q_top / inertia_mm / GLUE_WIDTH
+LEG_SEPERATION = 80
+LEG_HEIGHT = 75
+
+dimensions = [TOP_LENGTH, LEG_SEPERATION, LEG_HEIGHT, GLUE_WIDTH, MAT_THICKNESS]
+
+q_top_glue = TOP_LENGTH * MAT_THICKNESS
+shear_glue = max_moment * q_top_glue / inertia_mm / GLUE_WIDTH
 
 glue_fos = MAX_SHEAR_GLUE / shear_glue
 
-# YANG check shear at glue joint
+q_bot_matboard = 2 * MAT_THICKNESS * y_bar_mm
+shear_matboard = max_moment * q_bot_matboard / inertia_mm / (2 * MAT_THICKNESS)
+
+matboard_fos = MAX_SHEAR_MATBOARD / shear_matboard
 
 # YANG check thin plate buckling everywhere :melt:
 
