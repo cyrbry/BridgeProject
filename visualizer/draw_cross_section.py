@@ -9,7 +9,7 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from src.cross_section_geometry.designs import simple_square, i_beam, multi_web_box
+from src.cross_section_geometry.designs import simple_square, design0
 
 
 def draw_cross_section(geometry, title="Bridge Cross Section"):
@@ -72,5 +72,5 @@ def draw_cross_section(geometry, title="Bridge Cross Section"):
 
 
 if __name__ == "__main__":
-    geometry = multi_web_box()
-    draw_cross_section(geometry, title="Multi-Web Box Cross Section")
+    geometry = design0()
+    draw_cross_section(geometry, title="Design 0")
