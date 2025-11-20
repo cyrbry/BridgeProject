@@ -147,10 +147,34 @@ plate_loc = [100 200 300 600]
 
 
 
+%Variables
+matboardtens = 30 %MPa
+matboardcomp = 6 %MPa
+matboardE = 4000
+matboardtenscomp = [matboardtens; matboardcomp]
+contactcem = 2 %MPa
+dimensions = [100, 80, 75, 5, 1.27]
+y = [dimensions(3) + dimensions(5); 0]
+%Graph FOS Stress:
+FOStens = 30 ./ ((y_bar_mm) * max_moment / inertia_mm)
+FOScomp = 6 ./ (abs(y_bar_mm - (dimensions(3) + dimensions(5))) * max_moment / inertia_mm)
+plot(linspace(0, 1250, 215), FOStens)
+ylim([0, 50])
+
+FOStensmin = min(abs(FOStens))
 
 
+plot(linspace(0, 1250, 215), FOScomp)
+ylim([0, 50])
+xlim([0, 1250])
+
+FOScompmin = min(abs(FOScomp))
 
 
+%Calculate Buckling:
+E = 4000
+
+peuler = pi ^ 2 * E * inertia_mm / (BRIDGE_LEN ^ 2)
 
 
 
