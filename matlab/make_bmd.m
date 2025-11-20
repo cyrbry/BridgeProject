@@ -165,7 +165,10 @@ xlim([0, 1250])
 FOScompmin = min(abs(FOScomp))
 
 
+%Calculate Buckling:
+E = 4000
 
+peuler = pi ^ 2 * E * inertia_mm / (BRIDGE_LEN ^ 2)
 
 
 
