@@ -8,6 +8,27 @@ each design returns a dict with:
 plate_type can be 'top_flange', 'web', or 'bottom_flange'
 """
 
+def design0():
+    """
+    cross section with 100mm top flange, 80mm bottom flange, two webs, and small glue tab flanges
+    """
+    plates = [
+        {'b': 100, 'h': 1.27, 'x': 50, 'y': 74.365, 'plate_type': 'top_flange'},    # top flange
+        {'b': 1.27, 'h': 72.46, 'x': 10.635, 'y': 37.5, 'plate_type': 'web'},   # left web
+        {'b': 1.27, 'h': 72.46, 'x': 89.365, 'y': 37.5, 'plate_type': 'web'},  # right web
+        {'b': 80, 'h': 1.27, 'x': 50, 'y': 0.635, 'plate_type': 'bottom_flange'},     # bottom flange
+        {'b': 5, 'h': 1.27, 'x': 13.77, 'y': 73.73, 'plate_type': 'top_flange'},  # left glue tab
+        {'b': 5, 'h': 1.27, 'x': 86.23, 'y': 73.73, 'plate_type': 'top_flange'},  # right glue tab
+    ]
+
+    glue_joints = [73.73, 1.27]
+
+    return {
+        'plates': plates,
+        'glue_joints': glue_joints
+    }
+
+
 def simple_square():
     """
     hollow box
