@@ -69,7 +69,6 @@ def plot_bmd_sfd(x, loadcase, mass, design_name="design"):
 
 
 if __name__ == "__main__":
-    # TA values: leftmost wheel at 172mm from support A (197mm from left edge)
     # loadcase 2: locomotive (182N) + 2 regular cars (135N each)
     x = 197
     loadcase = 2

@@ -60,7 +60,6 @@ def calculate_and_print_fos(x_train, loadcase, mass, geometry, design_name="desi
 
 
 if __name__ == "__main__":
-    # TA values: leftmost wheel at 172mm from support A (197mm from left edge)
     # loadcase 2: locomotive (182N) + 2 regular cars (135N each)
     x = 197
     loadcase = 2

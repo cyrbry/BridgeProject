@@ -77,7 +77,6 @@ def plot_envelopes(loadcase, mass, design_name="design"):
 
 
 if __name__ == "__main__":
-    # TA values
     loadcase = 2
     mass = 452
 
