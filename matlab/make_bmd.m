@@ -1,12 +1,16 @@
 # all lengths are in mm, mm4, N, etc
 
+%% calculating design 4 moment of inertia_mm
+
+%% BME and SFE calculations
+
 clear, close all;
 
 BRIDGE_LEN = 1250;
 
 weight_loc = [0, 100, 200];
 weight_amt = [100, 100, 250];
-inertia_mm = 0.418e6;
+inertia_mm = 1.167e6;
 y_bar_mm = 41.4;
 
 # calculate axle pos relative to LHS
@@ -17,7 +21,7 @@ TRAIN_REL_POS = [ED_WHEEL AX_TO_AX CAR_TO_CAR AX_TO_AX CAR_TO_CAR AX_TO_AX];
 TRAIN_LEN = sum(TRAIN_REL_POS)
 TRAIN_REL_POS = cumsum(TRAIN_REL_POS);
 
-FREIGHT_N = 100;
+FREIGHT_N = 300;
 FREIGHT_N = FREIGHT_N / 2;
 BACK_MULT = 1.1;
 BACK_N = FREIGHT_N * BACK_MULT;
@@ -117,7 +121,7 @@ max_shear = max(max_shear)
 
 MAX_SHEAR_GLUE = 2 % MPA
 MAX_SHEAR_MATBOARD = 4 % MPA
-GLUE_WIDTH = 10 % mm
+GLUE_WIDTH = 20 % mm
 TOP_LENGTH = 100 % mm
 MAT_THICKNESS = 1.27 % mm
 LEG_SEPERATION = 80
@@ -136,6 +140,8 @@ shear_matboard = max_moment * q_bot_matboard / inertia_mm / (2 * MAT_THICKNESS)
 matboard_fos = MAX_SHEAR_MATBOARD / shear_matboard
 
 # YANG check thin plate buckling everywhere :melt:
+
+plate_loc = [100 200 300 600]
 
 
 
