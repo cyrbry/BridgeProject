@@ -55,25 +55,16 @@ fos_glue = GLUE_SHEAR / shear_glue
 p_euler = pi ^ 2 * E * INERTIA / (BRIDGE_LEN ^ 2);
 fos_euler_buckling = p_euler / MAX_LOAD
 
-function max_stress = thin_plate_buckling(K, t, b)
+function fos_thin_plate_shear = find_fos_thin_plate_shear(K, t, b, a, shear_max);
   E = 4000;
   MU = 0.2;
-  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * (t / b)^2;
-end
-
-function max_stress = thin_plate_buckling_shear(K, t, b, a);
-  E = 4000;
-  MU = 0.2;
-  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * ((t / b)^2 + (t / a)^2);
+  fos_thin_plate_shear = K * pi^2 * E / (12 * (1 - MU^2)) * ((t / b)^2 + (t / a)^2) / shear_max;
 end
 
 function fos_thin_plate = find_fos_thin_plate(K, t, b, stress_max)
-  fos_thin_plate = thin_plate_buckling(K, t, b) / stress_max;
-end
-
-
-function fos_thin_plate = find_fos_thin_plate_shear(K, t, b, a, shear_max)
-  fos_thin_plate = thin_plate_buckling_shear(K, t, b, a) / shear_max;
+  E = 4000;
+  MU = 0.2;
+  fos_thin_plate = K * pi^2 * E / (12 * (1 - MU^2)) * (t / b)^2 / stress_max;
 end
 
 # case 1: compressive flange between webs
