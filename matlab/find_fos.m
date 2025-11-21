@@ -1,32 +1,36 @@
 INERTIA = 1.167e6
 LOAD_CASE = 300
+CENTROID = 73.24
 MAX_LOAD = LOAD_CASE + 1.1 * LOAD_CASE + 1.1 * 1.35 * LOAD_CASE
 
-[max_moment_var_pos, max_shear_var_pos] = find_moment_shear(INERTIA, LOAD_CASE);
+[max_moment_var_pos, max_shear_var_pos, loc] = find_moment_shear(INERTIA, LOAD_CASE);
+loc = loc(1, (1:end-1))
 
-max_moment = max(max_moment_var_pos)
-max_shear = max(max_shear_var_pos)
+%positive_moment = max_moment_var_pos > 0;
+M = max_moment_var_pos(1, 2:end-1);
 
-GLUE_SHEAR = 2
-MAT_SHEAR = 4
-MAT_TEN = 30
-MAT_COMP = 6
-MAT_E = 4000
+GLUE_SHEAR = 2;
+MAT_SHEAR = 4;
+MAT_TEN = 30;
+MAT_COMP = 6;
+MAT_E = 4000;
 
-GLUE_WIDTH = 20 % mm
-TOP_LENGTH = 100 % mm
-MAT_THICKNESS = 1.27 % mm
-LEG_SEPERATION = 80
-LEG_HEIGHT = 75
+stress_tensile = M * CENTROID / INERTIA;
+fos_tension = MAT_TEN ./ stress_tensile
+plot(loc, fos_tension)
+title("FOS")
+xlabel("
 
-# check tensile strength at top
 
-dimensions = [TOP_LENGTH, LEG_SEPERATION, LEG_HEIGHT, GLUE_WIDTH, MAT_THICKNESS]
+positive_shear = max_shear_var_pos > 0;
+V = max_shear_var_pos(positive_shear);
 
-q_top_glue = TOP_LENGTH * MAT_THICKNESS
-shear_glue = max_moment * q_top_glue / inertia_mm / GLUE_WIDTH
+%M = max_moment_var_pos;
+%V = max_shear_var_pos;
 
-glue_fos = MAX_SHEAR_GLUE / shear_glue
+max_moment = max(max_moment_var_pos);
+max_shear = max(max_shear_var_pos);
+
 
 q_bot_matboard = 2 * MAT_THICKNESS * y_bar_mm
 shear_matboard = max_moment * q_bot_matboard / inertia_mm / (2 * MAT_THICKNESS)

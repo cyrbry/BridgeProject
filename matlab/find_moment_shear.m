@@ -1,4 +1,4 @@
-function [max_moment, max_shear] = find_moment_shear(I, car_weight)
+function [max_moment, max_shear, loc] = find_moment_shear(I, car_weight)
 	BRIDGE_LEN = 1250;
 
 	weight_loc = [0, 100, 200];
@@ -31,13 +31,14 @@ function [max_moment, max_shear] = find_moment_shear(I, car_weight)
 	SUPPORT_R = 1225;
 
 	# find the reaction forces on both sides
-	START_SIM = -TRAIN_LEN;
-	END_SIM = SUPPORT_R;
+	START_SIM = -TRAIN_LEN+100;
+	END_SIM = SUPPORT_R-100;
 	#START_SIM = 500
 	#END_SIM = 500
 	STEP_SIM = 10;
 	reaction = [[]:[]];
 	steps = START_SIM:STEP_SIM:END_SIM;
+  loc = steps;
 	max_moment = -1;
 	max_shear = -1;
 	for position = steps;
