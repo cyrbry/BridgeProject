@@ -17,15 +17,17 @@ def design0():
         {'b': 1.27, 'h': 72.46, 'x': 10.635, 'y': 37.5, 'plate_type': 'web'},   # left web
         {'b': 1.27, 'h': 72.46, 'x': 89.365, 'y': 37.5, 'plate_type': 'web'},  # right web
         {'b': 80, 'h': 1.27, 'x': 50, 'y': 0.635, 'plate_type': 'bottom_flange'},     # bottom flange
-        {'b': 5, 'h': 1.27, 'x': 13.77, 'y': 73.73, 'plate_type': 'top_flange'},  # left glue tab
-        {'b': 5, 'h': 1.27, 'x': 86.23, 'y': 73.73, 'plate_type': 'top_flange'},  # right glue tab
+        {'b': 5, 'h': 1.27, 'x': 13.77, 'y': 73.095, 'plate_type': 'top_flange'},  # left glue tab
+        {'b': 5, 'h': 1.27, 'x': 86.23, 'y': 73.095, 'plate_type': 'top_flange'},  # right glue tab
     ]
 
     glue_joints = [73.73, 1.27]
+    diaphragm_spacing = 150  # mm between diaphragms
 
     return {
         'plates': plates,
-        'glue_joints': glue_joints
+        'glue_joints': glue_joints,
+        'diaphragm_spacing': diaphragm_spacing
     }
 
 
@@ -41,10 +43,33 @@ def simple_square():
     ]
 
     glue_joints = [98.73, 1.27]
+    diaphragm_spacing = 150  # mm between diaphragms
 
     return {
         'plates': plates,
-        'glue_joints': glue_joints
+        'glue_joints': glue_joints,
+        'diaphragm_spacing': diaphragm_spacing
+    }
+
+
+def cigar():
+
+    plates = [
+        {'b': 100.0, 'h': 1.27, 'x': 49.650, 'y': 113.122, 'plate_type': 'top_flange'},
+        {'b': 1.27, 'h': 112.0, 'x': 10.635, 'y': 56.487, 'plate_type': 'web'},
+        {'b': 75.0, 'h': 1.27, 'x': 48.770, 'y': 1.122, 'plate_type': 'bottom_flange'},
+        {'b': 75.0, 'h': 1.27, 'x': 48.770, 'y': 110.582, 'plate_type': 'top_flange'},
+        {'b': 75.0, 'h': 1.27, 'x': 48.770, 'y': 111.852, 'plate_type': 'top_flange'},
+        {'b': 1.27, 'h': 112.0, 'x': 86.905, 'y': 56.487, 'plate_type': 'web'},
+    ]
+
+    glue_joints = []
+    diaphragm_spacing = 150  # mm between diaphragms
+
+    return {
+        'plates': plates,
+        'glue_joints': glue_joints,
+        'diaphragm_spacing': diaphragm_spacing
     }
 
 

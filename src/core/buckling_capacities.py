@@ -27,7 +27,7 @@ def sigma_buckling_flexural(b, t, E, nu, case=1):
     
     return sigma_crit
 
-def tau_buckling_shear(h, t, E, nu):
+def tau_buckling_shear(h, t, E, nu, spacing=None):
     """
     crit shear buckling stress for web
 
@@ -36,14 +36,35 @@ def tau_buckling_shear(h, t, E, nu):
         t: thickness (mm)
         E: Young's modulus (MPa)
         nu: Poisson's ratio
+        spacing: spacing between diaphragms (mm), optional
 
     Outputs tau_crit (MPa)
     """
-    
+
     # k=5 accounts for diagonal buckling
     k = 5.0
-    
+
     # calculate critical shear buckling stress
-    tau_crit = (k * math.pi**2 * E) / (12 * (1 - nu**2)) * (t / h)**2
-    
+    # includes both height and spacing terms if spacing provided
+    term1 = (t / h)**2
+    term2 = (t / spacing)**2 if spacing else 0
+
+    tau_crit = (k * math.pi**2 * E) / (12 * (1 - nu**2)) * (term1 + term2)
+
     return tau_crit
+
+def euler_buckling_load(I, E, L):
+    """
+    critical load for global euler buckling of the whole bridge
+
+    Input =
+        I: moment of inertia (mm^4)
+        E: Young's modulus (MPa)
+        L: length of bridge (mm)
+
+    Output = P_critical (N)
+    """
+
+    P_crit = (math.pi**2 * E * I) / (L**2)
+
+    return P_crit
