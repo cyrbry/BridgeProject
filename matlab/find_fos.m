@@ -1,9 +1,16 @@
 INERTIA = 0.894e6
+CENTROID = 65.8
+Q = 259
+
+INERTIA = 0.902e6
+CENTROID = 69.8
+Q = 268
+
+% constants
+
 HEIGHT = 100
 WIDTH = 75
 TOP_WIDTH = 100
-CENTROID = 65.8
-Q = 278
 Q_glue = Q
 GLUE_TAB = 50
 T = 1.27
@@ -51,13 +58,13 @@ fos_euler_buckling = p_euler / MAX_LOAD
 function max_stress = thin_plate_buckling(K, t, b)
   E = 4000;
   MU = 0.2;
-  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * (t / b)^2
+  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * (t / b)^2;
 end
 
-function max_stress = thin_plate_buckling_shear(K, t, b, a)
+function max_stress = thin_plate_buckling_shear(K, t, b, a);
   E = 4000;
   MU = 0.2;
-  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * ((t / b)^2 + (t / a)^2)
+  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * ((t / b)^2 + (t / a)^2);
 end
 
 function fos_thin_plate = find_fos_thin_plate(K, t, b, stress_max)
