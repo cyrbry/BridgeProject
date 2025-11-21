@@ -4,8 +4,11 @@ calculate failure loads and capacities along the bridge
 
 from src.core.BME_SFE import SFEvals, BMEvals
 from src.analysis.fos import find_FOS
+from src.core.buckling_capacities import euler_buckling_load
+from src.core.stress_envelope import get_section_properties
+from src.cross_section_geometry.designs import get_geometry_at_x
 
-def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points=10000):
+def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points=10000, bridge_length=1250):
     """
     calculate Vfail and Mfail along the bridge, plus FOS for each failure mode
 
@@ -15,9 +18,21 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
         mass: train mass (N)
         material_props: matboard and glue properties
         num_points: number of points along bridge (default 10000)
+        bridge_length: length of bridge for euler buckling (mm), default 1250
 
-    Output = dict with x positions, envelopes, FOS arrays for each mode, failure capacities, overall_min_fos, failure_load
+    Output = dict with x positions, envelopes, FOS arrays for each mode, failure capacities, overall_min_fos, failure_load, euler buckling
     """
+
+    # calculate euler buckling load (global, not position-dependent)
+    # use section properties at midspan for I
+    plates, glue_joints = get_geometry_at_x(geometry, bridge_length/2)
+    props = get_section_properties(plates, glue_joints)
+    P_euler = euler_buckling_load(props['I'], material_props['E'], bridge_length)
+
+    # total applied load includes train weight + bridge self-weight
+    # for now just use train mass, can add self-weight later
+    total_load = mass
+    fos_euler = P_euler / total_load if total_load > 0 else float('inf')
 
     # calculate shear force and bending moment envelopes
     sfe_min, sfe_max = SFEvals(loadcase, mass)
@@ -27,8 +42,7 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
     V_env = [max(abs(sfe_min[i]), abs(sfe_max[i])) for i in range(num_points)]
     M_max = bme_max
     M_min = bme_min
-    
-    bridge_length = 1250  # mm
+
     x_positions = [i * bridge_length / (num_points - 1) for i in range(num_points)]
     
     fos_tens_array = []
@@ -68,10 +82,10 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
     Mfail_buck2 = [fos_buck2_array[i] * M_env_mag[i] for i in range(num_points)]
     Mfail_buck3 = [fos_buck3_array[i] * M_env_mag[i] for i in range(num_points)]
     
-    # find overall minimum FOS
-    overall_min_fos = min(min_fos_array)
+    # find overall minimum FOS (include euler buckling)
+    overall_min_fos = min(min(min_fos_array), fos_euler)
     failure_load = overall_min_fos * mass
-    
+
     return {
         'x': x_positions,
         'V_env': V_env,
@@ -86,6 +100,8 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
         'fos_buck2': fos_buck2_array,
         'fos_buck3': fos_buck3_array,
         'fos_buckV': fos_buckV_array,
+        'fos_euler': fos_euler,
+        'P_euler': P_euler,
         'min_fos': min_fos_array,
         'Vfail_shear': Vfail_shear,
         'Vfail_glue': Vfail_glue,

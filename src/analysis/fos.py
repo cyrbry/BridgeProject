@@ -53,7 +53,8 @@ def find_FOS(x_position, geometry, V_env, M_max, M_min, material_props):
     # get buckling capacities
     E = material_props['E']
     nu = material_props['nu']
-    buckling = get_buckling_capacities(plates, E, nu)
+    diaphragm_spacing = geometry.get('diaphragm_spacing')
+    buckling = get_buckling_capacities(plates, E, nu, props['ybar'], diaphragm_spacing=diaphragm_spacing)
 
     # calculate all FOS values
     fos_tens = calculate_fos(stresses['tension_max'], material_props['sigma_tens'])
@@ -62,14 +63,17 @@ def find_FOS(x_position, geometry, V_env, M_max, M_min, material_props):
     fos_gl = calculate_fos(tau_glue_max, material_props['tau_glue_max'])
 
     # buckling FOS
-    fos_b1 = calculate_fos(stresses['top_compression'], buckling['top_flange'])
+    # case 1: top flange inside (k=4) vs top compression
+    fos_b1 = calculate_fos(stresses['top_compression'], buckling['top_flange_inside'])
 
+    # case 2: top flange overhang (k=0.425) vs top compression (same stress as case 1)
+    fos_b2 = calculate_fos(stresses['top_compression'], buckling['top_flange_overhang'])
+
+    # case 3: web (k=6) vs compression at top of web
     sigma_web = get_web_compression_stress(buckling['web_plates'], M_max, M_min, props['ybar'], props['I'])
-    fos_b2 = calculate_fos(sigma_web, buckling['web']) if buckling['web_plates'] else float('inf')
+    fos_b3 = calculate_fos(sigma_web, buckling['web']) if buckling['web_plates'] else float('inf')
 
-    fos_b3 = calculate_fos(stresses['bottom_compression'], buckling['bottom_flange']) \
-             if stresses['bottom_compression'] < 0 else float('inf')
-
+    # shear buckling
     fos_bV = calculate_fos(tau_c, buckling['shear'])
 
     # find minimum FOS and failure mode
