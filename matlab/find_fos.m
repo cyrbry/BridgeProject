@@ -1,8 +1,10 @@
-INERTIA = 1.167e6
-HEIGHT = 112.5
-CENTROID = 73.24
+INERTIA = 0.894e6
+HEIGHT = 100
+WIDTH = 75
+TOP_WIDTH = 100
+CENTROID = 65.8
 Q = 278
-Q_glue = 278
+Q_glue = Q
 GLUE_TAB = 50
 T = 1.27
 WEB_THICK = 2 * T
@@ -52,26 +54,37 @@ function max_stress = thin_plate_buckling(K, t, b)
   max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * (t / b)^2
 end
 
+function max_stress = thin_plate_buckling_shear(K, t, b, a)
+  E = 4000;
+  MU = 0.2;
+  max_stress = K * pi^2 * E / (12 * (1 - MU^2)) * ((t / b)^2 + (t / a)^2)
+end
+
 function fos_thin_plate = find_fos_thin_plate(K, t, b, stress_max)
-  fos_thin_plate = stress_max / thin_plate_buckling(K, t, b)
+  fos_thin_plate = thin_plate_buckling(K, t, b) / stress_max;
+end
+
+
+function fos_thin_plate = find_fos_thin_plate_shear(K, t, b, a, shear_max)
+  fos_thin_plate = thin_plate_buckling_shear(K, t, b, a) / shear_max;
 end
 
 # case 1: compressive flange between webs
 
+BETWEEN_WEB = WIDTH - T;
 fos_case1 = find_fos_thin_plate(4, 3*T, BETWEEN_WEB, MAT_COMP)
 
+# case 2: buckling at tips
 
+TIP_WIDTH = (TOP_WIDTH - WIDTH) / 2;
+fos_case2 = find_fos_thin_plate(0.425, T, TIP_WIDTH, MAT_COMP)
 
-b1 = 75 - 1.27 % top flange inside
-b2 = 12.5 + 1.27 % top flange flaps
-b3 = (112.7 - (4 * 1.27)) / 2 % height of web % VERY SUS CHECK THIS OUT
-b4 = b3 % sussy
-a = 150
-failure1 = 4 * (pi^2) * MAT_E * ((T * 3) ^ 2) / (12 * (1 - (MU ^ 2)) * (b1^2))
-FOSbuck1 = failure1 / (Mmax * (112.5 - CENTROID) / INERTIA)
-failure2 = 0.425 * (pi^2) * MAT_E * (T^2) / (12 * (1 - (MU^2)) * (b2^2))
-FOSbuck2 = failure2 / (Mmax * (112.5 - CENTROID) / INERTIA)
-failure3 = 6 * (pi^2) * MAT_E * (T^2) / (12 * (1 - (MU^2)) * (b3^2))
-FOSbuck3 = failure3 / (Mmax * (CENTROID - (1.27/2)) / INERTIA)
-failure4 = (5 * (pi^2) * MAT_E) ./ (12 * (1 - (MU^2))) .* (((2*T)/b4)^2 + ((2*T)./a).^2)
-FOSbuck4 = failure4 / shear
+# case 3: variable distributed load along web
+HALF_WEB = HEIGHT - 3 * T - CENTROID;
+fos_case3 = find_fos_thin_plate(6, T, HALF_WEB, MAT_COMP)
+
+# case 4: shear buckling of the webs (need diaphram)
+
+DIAPHRAM_DIST = 1200 / 8;
+HEIGHT_WEB = HEIGHT - 4 * T;
+fos_case4 = find_fos_thin_plate_shear(5, T, HEIGHT_WEB, DIAPHRAM_DIST, MAT_SHEAR)
