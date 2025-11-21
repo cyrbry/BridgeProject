@@ -8,6 +8,8 @@ each design returns a dict with:
 plate_type can be 'top_flange', 'web', or 'bottom_flange'
 """
 
+import numpy as np
+
 def design0():
     """
     cross section with 100mm top flange, 80mm bottom flange, two webs, and small glue tab flanges
@@ -55,16 +57,17 @@ def simple_square():
 def cigar():
 
     plates = [
-        {'b': 100.0, 'h': 1.27, 'x': 49.650, 'y': 113.122, 'plate_type': 'top_flange'},
-        {'b': 1.27, 'h': 112.0, 'x': 10.635, 'y': 56.487, 'plate_type': 'web'},
-        {'b': 75.0, 'h': 1.27, 'x': 48.770, 'y': 1.122, 'plate_type': 'bottom_flange'},
-        {'b': 75.0, 'h': 1.27, 'x': 48.770, 'y': 110.582, 'plate_type': 'top_flange'},
-        {'b': 75.0, 'h': 1.27, 'x': 48.770, 'y': 111.852, 'plate_type': 'top_flange'},
-        {'b': 1.27, 'h': 112.0, 'x': 86.905, 'y': 56.487, 'plate_type': 'web'},
+        {'b': 100.0, 'h': 1.27, 'x': 50.000, 'y': 99.365, 'plate_type': 'top_flange'},
+        {'b': 1.27, 'h': 98.73, 'x': 11.905, 'y': 49.365, 'plate_type': 'web'},
+        {'b': 72.46, 'h': 1.27, 'x': 48.770, 'y': 0.635, 'plate_type': 'bottom_flange'},
+        {'b': 72.46, 'h': 1.27, 'x': 48.770, 'y': 96.825, 'plate_type': 'top_flange'},
+        {'b': 72.46, 'h': 1.27, 'x': 48.770, 'y': 98.095, 'plate_type': 'top_flange'},
+        {'b': 1.27, 'h': 98.73, 'x': 85.635, 'y': 49.365, 'plate_type': 'web'},
     ]
 
-    glue_joints = []
-    diaphragm_spacing = 150  # mm between diaphragms
+    glue_joints = [np.float64(97.46), np.float64(98.73)]
+
+    diaphragm_spacing = 150
 
     return {
         'plates': plates,

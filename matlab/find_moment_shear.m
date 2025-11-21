@@ -4,7 +4,7 @@ function [max_moment, max_shear, loc] = find_moment_shear(I, car_weight)
 	weight_loc = [0, 100, 200];
 	inertia_mm = I;
 
-	# calculate axle pos relative to LHS
+	% calculate axle pos relative to LHS
 	ED_WHEEL = 52;
 	AX_TO_AX = 176;
 	CAR_TO_CAR = 164;
@@ -26,15 +26,15 @@ function [max_moment, max_shear, loc] = find_moment_shear(I, car_weight)
 	TRAIN_WEIGHT = -1 .* TRAIN_WEIGHT;
 	TOTAL_TRAIN_WEIGHT = sum(TRAIN_WEIGHT)
 
-	# calculate the reaction forces
+	% calculate the reaction forces
 	SUPPORT_L = 25;
 	SUPPORT_R = 1225;
 
-	# find the reaction forces on both sides
+	% find the reaction forces on both sides
 	START_SIM = -TRAIN_LEN+100;
 	END_SIM = SUPPORT_R-100;
-	#START_SIM = 500
-	#END_SIM = 500
+	%START_SIM = 500
+	%END_SIM = 500
 	STEP_SIM = 10;
 	reaction = [[]:[]];
 	steps = START_SIM:STEP_SIM:END_SIM;
@@ -42,12 +42,12 @@ function [max_moment, max_shear, loc] = find_moment_shear(I, car_weight)
 	max_moment = -1;
 	max_shear = -1;
 	for position = steps;
-			# find the reaction forces for each step
-			train_pos = TRAIN_REL_POS + position; # converts relative train pos to abs
-			# filters out axles that are not on the bridge anymore
-			# train_pos = train_pos .* (train_pos > SUPPORT_L) .* (train_pos < SUPPORT_R)
+			% find the reaction forces for each step
+			train_pos = TRAIN_REL_POS + position; % converts relative train pos to abs
+			% filters out axles that are not on the bridge anymore
+			% train_pos = train_pos .* (train_pos > SUPPORT_L) .* (train_pos < SUPPORT_R)
 			dist_to_lhs = train_pos - SUPPORT_L;
-			# checks if the train is on the bridge
+			% checks if the train is on the bridge
 			trains_on_bridge = (train_pos > SUPPORT_L) .* (train_pos < SUPPORT_R);
 			moments_to_lhs = dist_to_lhs .* TRAIN_WEIGHT .* trains_on_bridge;
 			dist_between_support = SUPPORT_R - SUPPORT_L;
@@ -57,7 +57,7 @@ function [max_moment, max_shear, loc] = find_moment_shear(I, car_weight)
 			reaction(1,end+1) = reaction_lhs;
 			reaction(2,end) = reaction_rhs;
 
-			# filter the train axles so that only the ones within the range are valid
+			% filter the train axles so that only the ones within the range are valid
 
 			train_load = nonzeros(TRAIN_WEIGHT .* trains_on_bridge);
 			train_pos = nonzeros(train_pos .* trains_on_bridge);
@@ -81,14 +81,14 @@ function [max_moment, max_shear, loc] = find_moment_shear(I, car_weight)
 			moment_n = cumsum(moment_n);
 			max_moment(end+1) = max(moment_n);
 
-			#plot(moment_loc, moment_n) # for the BME
-			#plot(force_loc, shear_n) # for the SFE
-			#hold on
+			%plot(moment_loc, moment_n) % for the BME
+			%plot(force_loc, shear_n) % for the SFE
+			%hold on
 
-	#  shear = [[reaction_lhs, train_load, reaction_rhs],[SUPPORT_L, train_pos, SUPPORT_R]]
-	#  plot(shear(2,:), shear(1,:))
-	#  hold on
+	%  shear = [[reaction_lhs, train_load, reaction_rhs],[SUPPORT_L, train_pos, SUPPORT_R]]
+	%  plot(shear(2,:), shear(1,:))
+	%  hold on
 	end
 
-#hold off
+%hold off
 end

@@ -42,8 +42,8 @@ class InteractiveDesigner:
 
         # envelope cache for BME/SFE - key is (loadcase, mass)
         self.envelope_cache = {}
-        self.current_loadcase = 1
-        self.current_mass = 400
+        self.current_loadcase = 2
+        self.current_mass = 1000
 
         # metrics panel text annotations
         self.metrics_text = None
@@ -415,8 +415,10 @@ class InteractiveDesigner:
             plate['b'] = float(new_width)
             plate['h'] = float(new_height)
 
-            # get selected radio button - use the value_selected attribute
-            plate['plate_type'] = self.editor_widgets['type'].value_selected
+            # get selected radio button
+            new_type = self.editor_widgets['type'].value_selected
+            print(f"[edit] changing plate type to: {new_type}")
+            plate['plate_type'] = new_type
 
             self.draw_all_plates()
             # reselect the same plate after redraw
@@ -427,8 +429,10 @@ class InteractiveDesigner:
 
             # update metrics after edit
             self.update_metrics_panel()
-        except (ValueError, AttributeError):
-            pass
+        except (ValueError, AttributeError) as e:
+            print(f"[edit] error applying edit: {e}")
+            import traceback
+            traceback.print_exc()
 
     def delete_selected(self, event):
         """delete the selected plate"""
@@ -908,9 +912,9 @@ class InteractiveDesigner:
         glue = get_glue_properties()
         material_props = {**matboard, **glue}
 
-        # run analysis for loadcase 1, 400N train
-        loadcase = 1
-        mass = 400  # N
+        # run analysis for loadcase 2, 1000N train
+        loadcase = 2
+        mass = 1000  # N
 
         try:
             results = calculate_failure_loads(self.geometry, loadcase, mass, material_props)
@@ -1017,6 +1021,8 @@ class InteractiveDesigner:
 
 
 if __name__ == "__main__":
+    import sys
+
     print("starting interactive designer...")
     print("controls:")
     print("  - click+drag plate: move plate")
@@ -1027,7 +1033,27 @@ if __name__ == "__main__":
     print("  - A: run structural analysis")
     print("  - click empty space: deselect")
     print()
-    geometry = design0()
+
+    # get design from command line argument or default to design0
+    if len(sys.argv) > 1:
+        design_name = sys.argv[1]
+        try:
+            from src.cross_section_geometry.designs import __dict__ as designs_dict
+            if design_name in designs_dict and callable(designs_dict[design_name]):
+                geometry = designs_dict[design_name]()
+                print(f"loaded design: {design_name}")
+            else:
+                print(f"design '{design_name}' not found, using design0")
+                geometry = design0()
+        except Exception as e:
+            print(f"error loading design '{design_name}': {e}")
+            print("using design0")
+            geometry = design0()
+    else:
+        print("no design specified, using design0")
+        print("usage: python interactive_designer.py [design_name]")
+        geometry = design0()
+
     print(f"loaded {len(geometry['plates'])} plates")
     print(f"loaded {len(geometry.get('glue_joints', []))} glue joints")
     designer = InteractiveDesigner(geometry)
