@@ -822,69 +822,69 @@ class InteractiveDesigner:
                 # format the metrics display
                 lines = []
                 lines.append('SECTION PROPERTIES')
-                lines.append(f'  ybar:      {metrics["ybar"]:.2f} mm')
-                lines.append(f'  I:         {metrics["I"]:.1f} mm^4')
-                lines.append(f'  area:      {metrics["area"]:.2f} mm^2')
-                lines.append(f'  y_top:     {metrics["y_top"]:.2f} mm')
-                lines.append(f'  y_bot:     {metrics["y_bot"]:.2f} mm')
+                lines.append(f'  ybar: {metrics["ybar"]} mm')
+                lines.append(f'  I: {metrics["I"]} mm^4')
+                lines.append(f'  area: {metrics["area"]} mm^2')
+                lines.append(f'  y_top: {metrics["y_top"]} mm')
+                lines.append(f'  y_bot: {metrics["y_bot"]} mm')
                 lines.append('')
 
                 lines.append('APPLIED STRESSES (at critical x)')
-                lines.append(f'  tension:    {metrics["tension_stress"]:.2f} MPa')
-                lines.append(f'  comp:       {metrics["compression_stress"]:.2f} MPa')
-                lines.append(f'  top comp:   {metrics["top_compression_stress"]:.2f} MPa')
-                lines.append(f'  shear:      {metrics["shear_stress"]:.3f} MPa')
-                lines.append(f'  glue:       {metrics["glue_stress"]:.3f} MPa')
-                lines.append(f'  web comp:   {metrics["web_compression_stress"]:.2f} MPa')
+                lines.append(f'  tension: {metrics["tension_stress"]} MPa')
+                lines.append(f'  comp: {metrics["compression_stress"]} MPa')
+                lines.append(f'  top comp: {metrics["top_compression_stress"]} MPa')
+                lines.append(f'  shear: {metrics["shear_stress"]} MPa')
+                lines.append(f'  glue: {metrics["glue_stress"]} MPa')
+                lines.append(f'  web comp: {metrics["web_compression_stress"]} MPa')
                 lines.append('')
 
                 lines.append('BUCKLING CASE 1 (top flange inside)')
-                lines.append(f'  t:          {metrics["buck1_t"]:.2f} mm')
-                lines.append(f'  b:          {metrics["buck1_b"]:.2f} mm')
+                lines.append(f'  t: {metrics["buck1_t"]} mm')
+                lines.append(f'  b: {metrics["buck1_b"]} mm')
                 cap1 = metrics["buck1_capacity"]
-                lines.append(f'  capacity:   {cap1:.1f} MPa' if cap1 != float('inf') else '  capacity:   inf MPa')
+                lines.append(f'  capacity: {cap1} MPa' if cap1 != float('inf') else '  capacity: inf MPa')
                 fos1 = metrics["fos_buck1"]
-                lines.append(f'  FOS:        {fos1:.2f}' if fos1 != float('inf') else '  FOS:        inf')
+                lines.append(f'  FOS: {fos1}' if fos1 != float('inf') else '  FOS: inf')
                 lines.append('')
 
                 lines.append('BUCKLING CASE 2 (top flange overhang)')
-                lines.append(f'  t:          {metrics["buck2_t"]:.2f} mm')
-                lines.append(f'  b:          {metrics["buck2_b"]:.2f} mm')
+                lines.append(f'  t: {metrics["buck2_t"]} mm')
+                lines.append(f'  b: {metrics["buck2_b"]} mm')
                 cap2 = metrics["buck2_capacity"]
-                lines.append(f'  capacity:   {cap2:.1f} MPa' if cap2 != float('inf') else '  capacity:   inf MPa')
+                lines.append(f'  capacity: {cap2} MPa' if cap2 != float('inf') else '  capacity: inf MPa')
                 fos2 = metrics["fos_buck2"]
-                lines.append(f'  FOS:        {fos2:.2f}' if fos2 != float('inf') else '  FOS:        inf')
+                lines.append(f'  FOS: {fos2}' if fos2 != float('inf') else '  FOS: inf')
                 lines.append('')
 
                 lines.append('BUCKLING CASE 3 (web)')
-                lines.append(f'  t:          {metrics["buck3_t"]:.2f} mm')
-                lines.append(f'  b:          {metrics["buck3_b"]:.2f} mm')
+                lines.append(f'  t: {metrics["buck3_t"]} mm')
+                lines.append(f'  b: {metrics["buck3_b"]} mm')
                 cap3 = metrics["buck3_capacity"]
-                lines.append(f'  capacity:   {cap3:.1f} MPa' if cap3 != float('inf') else '  capacity:   inf MPa')
+                lines.append(f'  capacity: {cap3} MPa' if cap3 != float('inf') else '  capacity: inf MPa')
                 fos3 = metrics["fos_buck3"]
-                lines.append(f'  FOS:        {fos3:.2f}' if fos3 != float('inf') else '  FOS:        inf')
+                lines.append(f'  FOS: {fos3}' if fos3 != float('inf') else '  FOS: inf')
                 lines.append('')
 
                 lines.append('SHEAR BUCKLING')
-                lines.append(f'  h:          {metrics["buckV_h"]:.2f} mm')
-                lines.append(f'  t:          {metrics["buckV_t"]:.2f} mm')
-                lines.append(f'  a:          {metrics["buckV_a"]:.2f} mm')
+                lines.append(f'  h: {metrics["buckV_h"]} mm')
+                lines.append(f'  t: {metrics["buckV_t"]} mm')
+                lines.append(f'  a: {metrics["buckV_a"]} mm')
                 capV = metrics["buckV_capacity"]
-                lines.append(f'  capacity:   {capV:.3f} MPa' if capV != float('inf') else '  capacity:   inf MPa')
+                lines.append(f'  capacity: {capV} MPa' if capV != float('inf') else '  capacity: inf MPa')
                 fosV = metrics["fos_buckV"]
-                lines.append(f'  FOS:        {fosV:.2f}' if fosV != float('inf') else '  FOS:        inf')
+                lines.append(f'  FOS: {fosV}' if fosV != float('inf') else '  FOS: inf')
                 lines.append('')
 
                 lines.append('GLUE SHEAR')
-                lines.append(f'  glue width: {metrics["glue_width"]:.2f} mm')
-                lines.append(f'  FOS:        {metrics["fos_glue"]:.2f}')
+                lines.append(f'  glue width: {metrics["glue_width"]} mm')
+                lines.append(f'  FOS: {metrics["fos_glue"]}')
                 lines.append('')
 
                 lines.append('SUMMARY')
-                lines.append(f'  min FOS:    {metrics["min_fos"]:.2f}')
-                lines.append(f'  failure:    {metrics["failure_mode"]}')
-                lines.append(f'  max load:   {metrics["max_load"]:.1f} N')
-                lines.append(f'  at x:       {metrics["critical_x"]:.1f} mm')
+                lines.append(f'  min FOS: {metrics["min_fos"]}')
+                lines.append(f'  failure: {metrics["failure_mode"]}')
+                lines.append(f'  max load: {metrics["max_load"]} N')
+                lines.append(f'  at x: {metrics["critical_x"]} mm')
 
                 text = '\n'.join(lines)
 
@@ -903,9 +903,7 @@ class InteractiveDesigner:
 
     def run_analysis(self, event):
         """run structural analysis on current cross section"""
-        print("\n" + "="*50)
-        print("STRUCTURAL ANALYSIS")
-        print("="*50)
+        print("\n--- structural analysis ---")
 
         # setup material properties
         matboard = get_matboard_properties()
@@ -961,14 +959,10 @@ class InteractiveDesigner:
             }
             limiting_mode = min(all_fos, key=all_fos.get)
 
-            print(f"Overall minimum FOS:          {results['overall_min_fos']:.2f}")
-            print(f"Limiting failure mode:        {limiting_mode}")
-            print(f"Maximum load capacity:        {results['failure_load']:.1f} N")
-            print("="*50 + "\n")
+            print(f"min FOS: {results['overall_min_fos']}, mode: {limiting_mode}, max load: {results['failure_load']:.1f}N\n")
 
         except Exception as e:
-            print(f"Analysis failed: {e}")
-            print("="*50 + "\n")
+            print(f"Analysis failed: {e}\n")
 
     def would_overlap(self, plate, new_y, new_x):
         """check if plate at new position would overlap with any other plate"""

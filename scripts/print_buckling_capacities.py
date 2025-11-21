@@ -44,14 +44,14 @@ def print_buckling_capacities(geometry, design_name="design"):
         overhang_info = get_flange_overhang_widths(top_plates, web_plates)
         t_top = get_stacked_thickness_vertical(top_plates)
         print(f"  top flange inside buckling (case 1, k=4):")
-        print(f"    inside width b = {overhang_info['inside_width']:.2f} mm")
-        print(f"    thickness t = {t_top:.2f} mm")
-        print(f"    sigma_crit = {buckling['top_flange_inside']:.2f} MPa")
+        print(f"    inside width b = {overhang_info['inside_width']} mm")
+        print(f"    thickness t = {t_top} mm")
+        print(f"    sigma_crit = {buckling['top_flange_inside']} MPa")
         print()
         print(f"  top flange overhang buckling (case 2, k=0.425):")
-        print(f"    max overhang = {overhang_info['max_overhang']:.2f} mm")
-        print(f"    thickness t = {t_top:.2f} mm")
-        print(f"    sigma_crit = {buckling['top_flange_overhang']:.2f} MPa")
+        print(f"    max overhang = {overhang_info['max_overhang']} mm")
+        print(f"    thickness t = {t_top} mm")
+        print(f"    sigma_crit = {buckling['top_flange_overhang']} MPa")
     else:
         print(f"  top flange: none")
     print()
@@ -62,9 +62,9 @@ def print_buckling_capacities(geometry, design_name="design"):
         compression_zone_height = web_top - neutral_axis_y
         t_web = max(p['b'] for p in web_plates)
         print(f"  web buckling (case 3, k=6):")
-        print(f"    compression zone height = {compression_zone_height:.2f} mm")
-        print(f"    thickness t = {t_web:.2f} mm")
-        print(f"    sigma_crit = {buckling['web']:.2f} MPa")
+        print(f"    compression zone height = {compression_zone_height} mm")
+        print(f"    thickness t = {t_web} mm")
+        print(f"    sigma_crit = {buckling['web']} MPa")
     else:
         print(f"  web: none")
     print()
@@ -72,7 +72,7 @@ def print_buckling_capacities(geometry, design_name="design"):
     # shear buckling
     if web_plates:
         print(f"  shear buckling:")
-        print(f"    tau_crit = {buckling['shear']:.2f} MPa")
+        print(f"    tau_crit = {buckling['shear']} MPa")
         if diaphragm_spacing:
             print(f"    (with diaphragm spacing = {diaphragm_spacing} mm)")
     else:

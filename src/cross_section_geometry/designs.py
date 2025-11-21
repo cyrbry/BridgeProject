@@ -65,7 +65,7 @@ def cigar():
         {'b': 1.27, 'h': 98.73, 'x': 85.635, 'y': 49.365, 'plate_type': 'web'},
     ]
 
-    glue_joints = [np.float64(97.46), np.float64(98.73)]
+    glue_joints = [97.46, 98.73]
 
     diaphragm_spacing = 150
 
@@ -78,18 +78,9 @@ def cigar():
 
 def get_geometry_at_x(geometry, x):
     """
-    gives the cross section geometry at position along the bridge
+    get cross section geometry at position x along the bridge
 
-    for now, this just returns the same geometry everywhere
-    later we can extende it to have the geometry change along the bridge
-
-    Input =
-        geometry: dict from simple_square() or other geometry function
-        x: position along bridge (mm)
-
-    Outputs =
-        plates is a list of plate dicts at position x
-        glue_joints is a list of glue joint y-coordinates at position x
+    for now returns constant geometry everywhere (later can be tapered)
     """
     # for constant cross-section we just return the same geometry
     return geometry['plates'], geometry['glue_joints']

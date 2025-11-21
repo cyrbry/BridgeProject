@@ -20,7 +20,7 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
         num_points: number of points along bridge (default 10000)
         bridge_length: length of bridge for euler buckling (mm), default 1250
 
-    Output = dict with x positions, envelopes, FOS arrays for each mode, failure capacities, overall_min_fos, failure_load, euler buckling
+    Output = dict with FOS arrays, failure capacities, min_fos, failure_load
     """
 
     # calculate euler buckling load (global, not position-dependent)
