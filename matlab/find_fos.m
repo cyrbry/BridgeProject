@@ -34,53 +34,22 @@ fos_shear = MAT_SHEAR / shear
 
 % glue shear fos
 
-% WILL NOT FAIL
+shear = Vmax *
 
 % euler buckling
 
 p_euler = pi ^ 2 * E * INERTIA / (BRIDGE_LEN ^ 2)
 fos_euler_buckling = p_euler / MAX_LOAD
 
-
-q_bot_matboard = 2 * MAT_THICKNESS * y_bar_mm
-shear_matboard = max_moment * q_bot_matboard / inertia_mm / (2 * MAT_THICKNESS)
-
-matboard_fos = MAX_SHEAR_MATBOARD / shear_matboard
-
-matboardtenscomp = [matboardtens; matboardcomp]
-contactcem = 2 %MPa
-dimensions = [100, 80, 75, 5, 1.27]
-y = [dimensions(3) + dimensions(5); 0]
-%Graph FOS Stress:
-FOStens = 30 ./ ((y_bar_mm) * max_moment / inertia_mm)
-FOScomp = 6 ./ (abs(y_bar_mm - (dimensions(3) + dimensions(5))) * max_moment / inertia_mm)
-plot(linspace(0, 1250, 215), FOStens)
-ylim([0, 50])
-
-FOStensmin = min(abs(FOStens))
-
-
-plot(linspace(0, 1250, 215), FOScomp)
-ylim([0, 50])
-xlim([0, 1250])
-
-FOScompmin = min(abs(FOScomp))
-
-
-%Calculate Buckling:
-E = 4000
-
-peuler = pi ^ 2 * E * inertia_mm / (BRIDGE_LEN ^ 2)
-
 mu = 0.2
 centroid = 73.34
 t = 1.27
-b1 = 75 - 1.27
-b2 = 12.5 + 1/27
-b3 = 112.7 - (4 * 1.27)
-b4 = b3
+b1 = 75 - 1.27 % top flange inside
+b2 = 12.5 + 1.27 % top flange flaps
+b3 = (112.7 - (4 * 1.27)) / 2 % height of web % VERY SUS CHECK THIS OUT
+b4 = b3 % sussy
 a = 150
-failure1 = 4 * (pi^2) * MAT_E * (t ^ 2) / (12 * (1 - (mu ^ 2)) * (b1^2))
+failure1 = 4 * (pi^2) * MAT_E * ((t * 3) ^ 2) / (12 * (1 - (mu ^ 2)) * (b1^2))
 FOSbuck1 = failure1 / (max_moment * (112.5 - centroid) / INERTIA)
 failure2 = 0.425 * (pi^2) * MAT_E * (t^2) / (12 * (1 - (mu^2)) * (b2^2))
 FOSbuck2 = failure2 / (max_moment * (112.5 - centroid) / INERTIA)
@@ -88,4 +57,4 @@ failure3 = 6 * (pi^2) * MAT_E * ((2*t)^2) / (12 * (1 - (mu^2)) * (b3^2))
 FOSbuck3 = failure3 / (max_moment * (centroid - (1.27/2)) / INERTIA)
 
 failure4 = (5 * (pi^2) * MAT_E) ./ (12 * (1 - (mu^2))) .* (((2*t)/b4)^2 + ((2*t)./a).^2)
-FOSbuck4 = failure4 / (max_moment * (centroid - (1.27/2)) / INERTIA)
+FOSbuck4 = failure4 / shear
