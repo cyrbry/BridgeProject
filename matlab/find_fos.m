@@ -71,3 +71,21 @@ FOScompmin = min(abs(FOScomp))
 E = 4000
 
 peuler = pi ^ 2 * E * inertia_mm / (BRIDGE_LEN ^ 2)
+
+mu = 0.2
+centroid = 73.34
+t = 1.27
+b1 = 75 - 1.27
+b2 = 12.5 + 1/27
+b3 = 112.7 - (4 * 1.27)
+b4 = b3
+a = 150
+failure1 = 4 * (pi^2) * MAT_E * (t ^ 2) / (12 * (1 - (mu ^ 2)) * (b1^2))
+FOSbuck1 = failure1 / (max_moment * (112.5 - centroid) / INERTIA)
+failure2 = 0.425 * (pi^2) * MAT_E * (t^2) / (12 * (1 - (mu^2)) * (b2^2))
+FOSbuck2 = failure2 / (max_moment * (112.5 - centroid) / INERTIA)
+failure3 = 6 * (pi^2) * MAT_E * ((2*t)^2) / (12 * (1 - (mu^2)) * (b3^2))
+FOSbuck3 = failure3 / (max_moment * (centroid - (1.27/2)) / INERTIA)
+
+failure4 = (5 * (pi^2) * MAT_E) ./ (12 * (1 - (mu^2))) .* (((2*t)/b4)^2 + ((2*t)./a).^2)
+FOSbuck4 = failure4 / (max_moment * (centroid - (1.27/2)) / INERTIA)
