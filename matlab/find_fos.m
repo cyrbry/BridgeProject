@@ -1,35 +1,45 @@
 INERTIA = 1.167e6
-LOAD_CASE = 300
+HEIGHT = 112.5
 CENTROID = 73.24
+Q = 278
+WEB_THICK = 2 * 1.27
+BRIDGE_LEN = 1200
+
+LOAD_CASE = 300
 MAX_LOAD = LOAD_CASE + 1.1 * LOAD_CASE + 1.1 * 1.35 * LOAD_CASE
 
-[max_moment_var_pos, max_shear_var_pos, loc] = find_moment_shear(INERTIA, LOAD_CASE);
-loc = loc(1, (1:end-1))
+[M, V, loc] = find_moment_shear(INERTIA, LOAD_CASE);
 
-%positive_moment = max_moment_var_pos > 0;
-M = max_moment_var_pos(1, 2:end-1);
+Mmax = max(M)
+Vmax = max(V)
 
 GLUE_SHEAR = 2;
 MAT_SHEAR = 4;
 MAT_TEN = 30;
 MAT_COMP = 6;
 MAT_E = 4000;
+E = 4000
 
-stress_tensile = M * CENTROID / INERTIA;
-fos_tension = MAT_TEN ./ stress_tensile
-plot(loc, fos_tension)
-title("FOS")
-xlabel("
+% comp tension fos
 
+stress_tension = Mmax * CENTROID / INERTIA
+stress_comp = Mmax * (HEIGHT - CENTROID) / INERTIA
+fos_tension = MAT_TEN / stress_tension
+fos_comp = MAT_COMP / stress_comp
 
-positive_shear = max_shear_var_pos > 0;
-V = max_shear_var_pos(positive_shear);
+% shear fos
 
-%M = max_moment_var_pos;
-%V = max_shear_var_pos;
+shear = Vmax * Q / INERTIA / WEB_THICK;
+fos_shear = MAT_SHEAR / shear
 
-max_moment = max(max_moment_var_pos);
-max_shear = max(max_shear_var_pos);
+% glue shear fos
+
+% WILL NOT FAIL
+
+% euler buckling
+
+p_euler = pi ^ 2 * E * INERTIA / (BRIDGE_LEN ^ 2)
+fos_euler_buckling = p_euler / MAX_LOAD
 
 
 q_bot_matboard = 2 * MAT_THICKNESS * y_bar_mm
