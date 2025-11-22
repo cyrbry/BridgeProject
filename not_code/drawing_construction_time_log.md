@@ -29,17 +29,13 @@ Cross-section prototype
 
 (put those 4 side by side in the pdf)
 
-## add elevation, top and bottom views by yang
+{/Users/julianmoncarz/University/Year_1/Fall_2025/CIV102_Structures/Bridge Project/not_code/images_for_construction/elevation_and_others.jpg}
 
-
-
-- Splice, diaphragm, and any other connection details
-
-### add these from yang
+Elevation, top and bottom views, splice, and diaphragm drawings
 
 {join_prototype.JPG}
 
-Connection Joint Prototype - Shows splice and diaphragm joining method
+Connection Joint Prototype - Shows splice joining method
 
 
 - Optional: 3D rendering or 3D pencil/pen sketch of the entire bridge (if you have time)
@@ -85,15 +81,45 @@ Creased small box section
 
 Completed cigar-shaped sections - both wrapped matboard sections completed and ready for assembly
 
+### Workspace post cleanup
 
-### Photo Requirements
+3:25 PM {workspace_post_cleanup.jpg}
 
-- **Timestamped, non-blurry photos** showing your work
-- Add a caption or label for each photo explaining what's happening
-- Include a photo showing all precautions taken to keep your building space clean (see "Safe Cutting Setup" images above)
-- Include a photo of your building space at the end of each construction session
+Workspace post cleanup - so clean! We even put the chairs back nicely
+
+### Assembly and Gluing
+
+3:40 PM {gluing_diaphrams.jpg}
+
+Gluing diaphragms in
+
+5:05 PM {complete bridge clamped and drying.jpg}
+
+Complete bridge clamped and drying
+
+### Safety and Workspace
+
+5:05 PM {yang and daniel being safe with gas masks.jpg}
+
+Yang and daniel being safe with gas masks
+
+
+
+
+
 
 ## Time log
 
-just screenshot it and put it here when we are done
+| Task | Date | Yang | Daniel | Julian | Total |
+|------|------|------|--------|--------|-------|
+| Deliverable 0 | Nov 5 | 2 | 2 | 1 | 5 |
+| Set up github, write code | Nov 18 | 2 | 2 | 2 | 6 |
+| Matlab code for reactions, SFE, BME | Nov 19 | 5 | 5 | 0 | 5 |
+| python code for everything, test a lot | Nov 19 | 0 | 0 | 8 | 8 |
+| code | Nov 20 | 7 | 7 | 7 | 21 |
+| finalise design and sketch cutting pattern | Nov 21 | 3 | 3 | 3 | 9 |
+| cut and glue bridge | Nov 21 | 6 | 6 | 6 | 18 |
+| work on reports | Nov 22 | 2 | 2 | 2 | 6 |
+| work on reports | Nov 23 | 3 | 3 | 3 | 9 |
+| **TOTALS** | | **30** | **30** | **32** | **92** |
 

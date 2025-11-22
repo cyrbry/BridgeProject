@@ -16,12 +16,12 @@ def SFEvals(loadcase, mass, num_train_positions=1000):
     """
     Find shear force envelopes (max and min shear at each point on bridge)
 
-    Input = 
+    Input =
         loadcase: 1, 2, or 3
         mass: total mass of train
         num_train_positions: number of train positions to test (default 1000)
 
-    Outputs = 
+    Outputs =
         sfe_max: list of max shear force at 10,000 points along the bridge
          sfe_min: list of min shear force at 10,000 points along the bridge
     """
@@ -45,14 +45,34 @@ def SFEvals(loadcase, mass, num_train_positions=1000):
 
     # for each train position, calculate SFD and update envelope
     for x in x_positions:
-        sfd = SFDvals(x, loadcase, mass)
+        sfd = SFDvals(x, loadcase, mass, reversed=False)
         for i in range(num_points):
             sfe_max[i] = max(sfe_max[i], sfd[i])
             sfe_min[i] = min(sfe_min[i], sfd[i])
 
+    # for asymmetric load cases, also sweep with train reversed
+    if loadcase in [2, 3]:
+        for x in x_positions:
+            sfd = SFDvals(x, loadcase, mass, reversed=True)
+            for i in range(num_points):
+                sfe_max[i] = max(sfe_max[i], sfd[i])
+                sfe_min[i] = min(sfe_min[i], sfd[i])
+
     return sfe_min, sfe_max
 
 def BMEvals(loadcase, mass, num_train_positions=1000):
+    """
+    Find bending moment envelopes (max and min moment at each point on bridge)
+
+    Input =
+        loadcase: 1, 2, or 3
+        mass: total mass of train
+        num_train_positions: number of train positions to test (default 1000)
+
+    Outputs =
+        bme_max: list of max bending moment at 10,000 points along the bridge
+        bme_min: list of min bending moment at 10,000 points along the bridge
+    """
     train_length = 856
     bridge_length = 1250
 
@@ -65,10 +85,20 @@ def BMEvals(loadcase, mass, num_train_positions=1000):
     num_points = 10000
     bme_max = [float('-inf')] * num_points
     bme_min = [float('inf')] * num_points
+
+    # for each train position, calculate BMD and update envelope
     for x in x_positions:
-        bmd = BMDvals(x, loadcase, mass)
+        bmd = BMDvals(x, loadcase, mass, reversed=False)
         for i in range(num_points):
             bme_max[i] = max(bme_max[i], bmd[i])
             bme_min[i] = min(bme_min[i], bmd[i])
+
+    # for asymmetric load cases, also sweep with train reversed
+    if loadcase in [2, 3]:
+        for x in x_positions:
+            bmd = BMDvals(x, loadcase, mass, reversed=True)
+            for i in range(num_points):
+                bme_max[i] = max(bme_max[i], bmd[i])
+                bme_min[i] = min(bme_min[i], bmd[i])
 
     return bme_min, bme_max

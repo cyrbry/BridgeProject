@@ -62,18 +62,19 @@ def plot_sfe_bme(loadcase, mass, save_path=None):
     else:
         plt.show()
 
-def plot_fos_along_bridge(failure_results, save_path=None):
+def plot_fos_along_bridge(failure_results, save_path=None, title=None):
     """
     plot all FOS values along bridge length
-    
-    Input = 
+
+    Input =
         failure_results: dict from calculate_failure_loads()
         save_path: path to save figure (optional)
+        title: custom title for the plot (optional)
     """
     x = failure_results['x']
-    
+
     fig, ax = plt.subplots(figsize=(14, 8))
-    
+
     # plot each FOS
     ax.plot(x, failure_results['fos_tens'], label='Tension', linewidth=2)
     ax.plot(x, failure_results['fos_comp'], label='Compression', linewidth=2)
@@ -83,21 +84,29 @@ def plot_fos_along_bridge(failure_results, save_path=None):
     ax.plot(x, failure_results['fos_buck2'], label='Flexural Buckling Case 2', linewidth=1.5, linestyle='--')
     ax.plot(x, failure_results['fos_buck3'], label='Flexural Buckling Case 3', linewidth=1.5, linestyle='--')
     ax.plot(x, failure_results['fos_buckV'], label='Shear Buckling', linewidth=1.5, linestyle='--')
-    ax.plot(x, failure_results['min_fos'], 'k-', label='Minimum FOS', linewidth=3)
-    
+
     # add horizontal line at FOS = 1
     ax.axhline(y=1, color='r', linestyle=':', linewidth=2, label='FOS = 1 (failure)')
-    
+
     # add support lines
     ax.axvline(x=25, color='gray', linestyle='--', linewidth=1, alpha=0.5)
     ax.axvline(x=1225, color='gray', linestyle='--', linewidth=1, alpha=0.5)
-    
+
     ax.grid(True, alpha=0.3)
     ax.set_xlabel('Position along bridge (mm)', fontsize=12)
     ax.set_ylabel('Factor of Safety (FOS)', fontsize=12)
-    ax.set_title(f'Factor of Safety Along Bridge\nmin FOS: {failure_results["overall_min_fos"]}, failure load: {failure_results["failure_load"]}N', fontsize=14)
+
+    min_fos = failure_results["overall_min_fos"]
+    fail_load = failure_results["failure_load"]
+    fail_mode = failure_results.get("failure_mode", "unknown")
+
+    if title:
+        ax.set_title(f'{title}\nmin FOS: {min_fos:.2f}, failure load: {fail_load:.1f}N, failure mode: {fail_mode}', fontsize=14)
+    else:
+        ax.set_title(f'Factor of Safety Along Bridge\nmin FOS: {min_fos:.2f}, failure load: {fail_load:.1f}N, failure mode: {fail_mode}', fontsize=14)
+
     ax.legend(loc='best', fontsize=10)
-    ax.set_ylim(bottom=0)
+    ax.set_ylim(bottom=0, top=15)
     
     plt.tight_layout()
     

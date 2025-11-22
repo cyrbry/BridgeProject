@@ -35,7 +35,7 @@ Assumptions
     - leftmost car is the locomotive, 1.38x the wieght of the heavy freight car or 1.38x1.1 the wight of the light middle freight car
 """
 
-def get_wheel_loads(x, loadcase, mass):
+def get_wheel_loads(x, loadcase, mass, reversed=False):
     """
     calculate wheel positions and loads for a the load case
 
@@ -43,6 +43,7 @@ def get_wheel_loads(x, loadcase, mass):
         x: position of leftmost wheel (mm from left edge of bridge)
         loadcase: 1, 2, or 3
         mass: total mass of train
+        reversed: if True, reverse the wheel load order (for bidirectional analysis)
 
     Outputs =
         wheel_positions is a list of 6 wheel positions (mm)
@@ -95,10 +96,14 @@ def get_wheel_loads(x, loadcase, mass):
             mass_heavy_freight / 2, mass_heavy_freight / 2      # rightmost car (heavy freight)
         ]
 
+    # reverse wheel loads if requested (for bidirectional analysis)
+    if reversed:
+        wheel_loads = wheel_loads[::-1]
+
     return wheel_positions, wheel_loads
 
 
-def reactions(x, loadcase, mass):
+def reactions(x, loadcase, mass, reversed=False):
     """
     calculate reaction forces at supports A (25mm) and B (1225mm)
 
@@ -106,13 +111,14 @@ def reactions(x, loadcase, mass):
         x: position of leftmost wheel (mm from left edge of bridge)
         loadcase: 1, 2, or 3
         mass: total mass of train
+        reversed: if True, reverse the wheel load order (for bidirectional analysis)
 
     Outputs =
         RA is the reaction force at left support (N)
         RB is the reaction force at right support (N)
     """
     # get wheel positions and loads
-    wheel_positions, wheel_loads = get_wheel_loads(x, loadcase, mass)
+    wheel_positions, wheel_loads = get_wheel_loads(x, loadcase, mass, reversed=reversed)
 
     # support positions
     support_B = 1225  # mm from left
@@ -138,7 +144,7 @@ def reactions(x, loadcase, mass):
 
     return RA, RB
 
-def SFDvals(x, loadcase, mass):
+def SFDvals(x, loadcase, mass, reversed=False):
     """
     calculate shear force at 10,000 evenly spaced points
 
@@ -146,13 +152,14 @@ def SFDvals(x, loadcase, mass):
         x: position of leftmost wheel (mm from left edge of bridge)
         loadcase: 1, 2, or 3
         mass: total mass of train
+        reversed: if True, reverse the wheel load order (for bidirectional analysis)
 
     Outputs =
         sfd is a list of shear force values at 10,000 points from 0 to 1250 mm
     """
     # get reaction forces and wheel loads
-    RA, RB = reactions(x, loadcase, mass)
-    wheel_positions, wheel_loads = get_wheel_loads(x, loadcase, mass)
+    RA, RB = reactions(x, loadcase, mass, reversed=reversed)
+    wheel_positions, wheel_loads = get_wheel_loads(x, loadcase, mass, reversed=reversed)
 
     # Support positions
     support_A = 25    # mm from left
@@ -185,7 +192,7 @@ def SFDvals(x, loadcase, mass):
 
     return sfd
 
-def BMDvals(x, loadcase, mass):
+def BMDvals(x, loadcase, mass, reversed=False):
     """
     calculate bending moment values at 10,000 evenly spaced points
 
@@ -193,13 +200,14 @@ def BMDvals(x, loadcase, mass):
         x: position of leftmost wheel (mm from left edge of bridge)
         loadcase: 1, 2, or 3
         mass: total mass of train
+        reversed: if True, reverse the wheel load order (for bidirectional analysis)
 
     Outputs =
         bmd is a list of bending moment values at 10,000 points from 0 to 1250 mm
     """
     # Get reaction forces and wheel loads
-    RA, RB = reactions(x, loadcase, mass)
-    wheel_positions, wheel_loads = get_wheel_loads(x, loadcase, mass)
+    RA, RB = reactions(x, loadcase, mass, reversed=reversed)
+    wheel_positions, wheel_loads = get_wheel_loads(x, loadcase, mass, reversed=reversed)
 
     # Support positions
     support_A = 25    # mm from left

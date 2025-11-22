@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from src.core.BME_SFE import SFEvals, BMEvals
 
-def plot_envelopes(loadcase, mass, design_name="design"):
+def plot_envelopes(loadcase, mass, design_name="design", save_path=None):
     """
     calculate and plot SFE and BME for a given load case
 
@@ -18,6 +18,7 @@ def plot_envelopes(loadcase, mass, design_name="design"):
         loadcase: 1, 2, or 3
         mass: total mass of train (N)
         design_name: name for the plot title
+        save_path: if provided, save to this path instead of showing
     """
     print(f"Calculating envelopes for loadcase {loadcase}, mass {mass}N...")
 
@@ -43,7 +44,7 @@ def plot_envelopes(loadcase, mass, design_name="design"):
     ax1.grid(True, alpha=0.3)
     ax1.set_xlabel('Position along bridge (mm)')
     ax1.set_ylabel('Shear Force (N)')
-    ax1.set_title(f'Shear Force Envelope - {design_name} (loadcase={loadcase}, mass={mass}N)')
+    ax1.set_title(f'SFE for {design_name} under Load Case {loadcase} ({mass}N)')
     ax1.legend()
 
     # plot BME
@@ -56,11 +57,16 @@ def plot_envelopes(loadcase, mass, design_name="design"):
     ax2.grid(True, alpha=0.3)
     ax2.set_xlabel('Position along bridge (mm)')
     ax2.set_ylabel('Bending Moment (N·mm)')
-    ax2.set_title(f'Bending Moment Envelope - {design_name}')
+    ax2.set_title(f'BME for {design_name} under Load Case {loadcase} ({mass}N)')
     ax2.legend()
 
     plt.tight_layout()
-    plt.show()
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Saved to {save_path}")
+        plt.close()
+    else:
+        plt.show()
 
     # print some stats
     max_shear_pos = max(sfe_max)
@@ -77,7 +83,24 @@ def plot_envelopes(loadcase, mass, design_name="design"):
 
 
 if __name__ == "__main__":
-    loadcase = 2
-    mass = 452
+    import os
 
-    plot_envelopes(loadcase, mass, design_name="design0")
+    base_path = os.path.join(os.path.dirname(__file__), '..', 'not_code', 'images_for_calc_report')
+
+    # Design 0, Load Case 1
+    plot_envelopes(
+        loadcase=1,
+        mass=400,
+        design_name="Design 0",
+        save_path=os.path.join(base_path, "SFE_design0_loadcase1.png")
+    )
+
+    # Cigar design, Load Case 2
+    plot_envelopes(
+        loadcase=2,
+        mass=452,
+        design_name="Cigar (Final Design)",
+        save_path=os.path.join(base_path, "SFE_cigar_loadcase2.png")
+    )
+
+    print("\nDone!")

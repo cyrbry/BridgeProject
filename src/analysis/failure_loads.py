@@ -86,6 +86,24 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
     overall_min_fos = min(min(min_fos_array), fos_euler)
     failure_load = overall_min_fos * mass
 
+    # determine which failure mode corresponds to the minimum FOS
+    failure_mode = "unknown"
+    if overall_min_fos == fos_euler:
+        failure_mode = "euler buckling"
+    else:
+        # find which mode has the minimum FOS at any location
+        all_fos = {
+            'tension': min(fos_tens_array),
+            'compression': min(fos_comp_array),
+            'shear': min(fos_shear_array),
+            'glue': min(fos_glue_array),
+            'flexural buckling case 1': min(fos_buck1_array),
+            'flexural buckling case 2': min(fos_buck2_array),
+            'flexural buckling case 3': min(fos_buck3_array),
+            'shear buckling': min(fos_buckV_array)
+        }
+        failure_mode = min(all_fos, key=all_fos.get)
+
     return {
         'x': x_positions,
         'V_env': V_env,
@@ -112,7 +130,8 @@ def calculate_failure_loads(geometry, loadcase, mass, material_props, num_points
         'Mfail_buck2': Mfail_buck2,
         'Mfail_buck3': Mfail_buck3,
         'overall_min_fos': overall_min_fos,
-        'failure_load': failure_load
+        'failure_load': failure_load,
+        'failure_mode': failure_mode
     }
 
 def find_critical_location(failure_results):
