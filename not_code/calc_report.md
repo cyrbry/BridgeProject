@@ -2,7 +2,7 @@
 
 ## Hand calcs for Design 0 under 400N load case 1
 
-- just copy /Users/julianmoncarz/University/Year_1/Fall_2025/CIV102_Structures/Bridge Project/not_code/CIV102 Project Team 201 Deliverable 1.pdf here
+- just copy /Users/julianmoncarz/University/Year_1/Fall_2025/CIV102_Structures/Bridge Project/not_code/CIV102 Project Team 201 Deliverable 1.pdf here ?? nah needs to be redone?? idk
 
 ## Evidence of programming
 
@@ -62,4 +62,4 @@ Inputs to all of this: First wheel at 172mm, loadcase 1, 400N total load, dict d
 
 ### Entire script, showing comments, formatting, and user-defined functions. Also indicate the packages you installed as well, such as “NumPy”
 
-make this a github repo with ONLY the needed code to make the above plots
+make this a github repo with ONLY the needed code to make the above plots?
